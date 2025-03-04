@@ -1,12 +1,11 @@
 const express = require('express');
 const { addShippingAddress, getShippingAddress, updateShippingAddress } = require("../controllers/shippingController");
 
-const authMiddleware = require("../middleware/authMiddleware"); ;
 
 const router = express.Router();
 
-router.post('/', authMiddleware, addShippingAddress);
-router.get('/', authMiddleware, getShippingAddress);
-router.put('/', authMiddleware, updateShippingAddress);
+router.post('/' , addShippingAddress);
+router.get('/', getShippingAddress);
+router.put('/', updateShippingAddress);
 
 module.exports = router;
