@@ -13,6 +13,7 @@ const userRoutes = require("./routes/userRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const adminuserRoutes = require("./routes/adminuserRoutes");
 const wishlistRoutes = require("./routes/wishlistRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 const shippingRoutes = require('./routes/shippingRoutes');
 const app = express();
 
@@ -54,6 +55,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/adminuser", adminuserRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use('/api/shipping', shippingRoutes);
+app.use("/api/payment", paymentRoutes);
 app.listen(PORT, () => {
   console.log("running");
 });

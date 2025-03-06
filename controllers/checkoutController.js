@@ -1,11 +1,13 @@
 const Cart = require("../models/Cart");
 const Order = require("../models/Order");
-const Product = require("../models/Product"); // You need to create Order model
+const Product = require("../models/Product");
 
 // Checkout (Move Cart to Order)
 exports.checkout = async (req, res) => {
   try {
+    const { paymentMethod } = req.body;
     const userId = req.user.id;
+
     const cart = await Cart.findOne({ userId }).populate("items.productId");
     if (!cart || cart.items.length === 0) return res.status(400).json({ message: "Cart is empty" });
 
@@ -13,7 +15,8 @@ exports.checkout = async (req, res) => {
       userId,
       items: cart.items,
       totalPrice: cart.totalPrice,
-      status: "Pending",
+      status: paymentMethod === "COD" ? "Pending" : "Processing",
+      paymentMethod,
     });
 
     await order.save();
@@ -28,7 +31,7 @@ exports.checkout = async (req, res) => {
 // Buy Now (Direct Order without Cart)
 exports.buyNow = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    const { productId, quantity, paymentMethod } = req.body;
     const userId = req.user.id;
 
     const product = await Product.findById(productId);
@@ -38,7 +41,8 @@ exports.buyNow = async (req, res) => {
       userId,
       items: [{ productId, quantity }],
       totalPrice: product.price * quantity,
-      status: "Pending",
+      status: paymentMethod === "COD" ? "Pending" : "Processing",
+      paymentMethod,
     });
 
     await order.save();
