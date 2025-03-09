@@ -7,7 +7,7 @@ exports.addShippingAddress = async (req, res) => {
         const newAddress = new ShippingAddress({
             user: req.user.id, // Assuming authentication middleware adds `user` to `req`
             fullName,
-            email, // Added email field
+            email,
             phone,
             address,
             city,
